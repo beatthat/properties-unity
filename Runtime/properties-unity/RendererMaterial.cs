@@ -6,23 +6,45 @@ namespace BeatThat
 {
     public class RendererMaterial : HasMaterial, IDrive<Renderer>
 	{
+        public enum MaterialOptions 
+        {
+            USE_INSTANCE = 0,
+            USE_SHARED = 1
+        }
+
 		[FormerlySerializedAs("m_renderer")]public Renderer m_driven;
+        public MaterialOptions m_materialOptions;
 
 		public override Material value
 		{
 			get {
-                if(Application.isPlaying) {
+                if(!Application.isPlaying) {
                     return this.renderer.sharedMaterial;
                 }
-                return this.renderer.material;
+                switch(m_materialOptions) {
+                    case MaterialOptions.USE_SHARED:
+                        return this.renderer.sharedMaterial;
+                    case MaterialOptions.USE_INSTANCE:
+                        return this.renderer.material;
+                    default:
+                        return this.renderer.sharedMaterial;
+                }
 			}
 			set {
-                if (Application.isPlaying)
+                if (!Application.isPlaying)
                 {
                     this.renderer.sharedMaterial = value;
                 }
                 else {
-                    this.renderer.material = value;
+                    switch (m_materialOptions)
+                    {
+                        case MaterialOptions.USE_SHARED:
+                            this.renderer.sharedMaterial = value;
+                            break;
+                        case MaterialOptions.USE_INSTANCE:
+                            this.renderer.material = value;
+                            break;
+                    }
                 }
 			}
 		}
