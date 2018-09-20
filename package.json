@@ -1,7 +1,7 @@
 {
   "name": "properties-unity",
   "scope": "beatthat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Expose properties of standard Unity components as Property components",
   "main": "index.js",
   "scripts": {
